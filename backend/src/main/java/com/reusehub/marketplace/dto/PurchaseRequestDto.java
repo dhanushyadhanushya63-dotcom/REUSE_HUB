@@ -10,6 +10,10 @@ public class PurchaseRequestDto {
     private String buyerMessage;
     private String sellerResponse;
     private String status;
+    private String trackingNumber;
+    private String trackingStatus;
+    private String carrier;
+    private String handoverOtp;
 
     public PurchaseRequestDto() {}
 
@@ -33,4 +37,16 @@ public class PurchaseRequestDto {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getTrackingNumber() { return trackingNumber; }
+    public void setTrackingNumber(String trackingNumber) { this.trackingNumber = trackingNumber; }
+
+    public String getTrackingStatus() { return trackingStatus; }
+    public void setTrackingStatus(String trackingStatus) { this.trackingStatus = trackingStatus; }
+
+    public String getCarrier() { return carrier; }
+    public void setCarrier(String carrier) { this.carrier = carrier; }
+
+    public String getHandoverOtp() { return handoverOtp; }
+    public void setHandoverOtp(String handoverOtp) { this.handoverOtp = handoverOtp; }
 }

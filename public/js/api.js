@@ -401,6 +401,7 @@ const DEFAULT_LOCAL_DB = {
   purchaseRequests: [
     {
       id: 1,
+      trackingNumber: "TRK-RUH-8401",
       productId: 5,
       productTitle: "Office Chair",
       productPrice: 1500,
@@ -408,12 +409,145 @@ const DEFAULT_LOCAL_DB = {
       buyerName: "Priya Raman",
       sellerId: 2,
       sellerName: "Karthik Sundaram",
-      status: "PENDING",
+      status: "ACCEPTED",
+      trackingStatus: "SHIPPED",
+      carrier: "ReUseHub Green Express Local Courier",
+      driverName: "Murugan S (Delivery Partner)",
+      driverPhone: "+91 94451 88291",
       pickupDate: "2026-11-25",
       pickupTime: "05:30 PM",
-      buyerMessage: "Hello Karthik, I can pick up the chair on Wednesday evening around 5:30 PM.",
-      sellerResponse: null,
-      createdAt: "2026-11-23T11:00:00Z"
+      shippedAt: "2026-11-25T08:30:00Z",
+      estimatedDelivery: "2026-11-25T17:30:00Z",
+      deliveredAt: null,
+      deliveryAddress: "28, Lattice Bridge Road, Adyar, Chennai - 600020",
+      pickupLocation: "14, Gandhi Road, Near Tambaram Railway Station, West Gate, Chennai",
+      handoverOtp: "6291",
+      buyerMessage: "Hello Karthik, I work near Adyar and scheduled courier pickup for Wednesday evening around 5:30 PM.",
+      sellerResponse: "Accepted! Item packed and dispatched via ReUseHub Green Express.",
+      createdAt: "2026-11-23T11:00:00Z",
+      statusHistory: [
+        {
+          status: "ORDER_PLACED",
+          title: "Purchase Request Placed",
+          time: "Nov 23, 2026 - 11:00 AM",
+          location: "Adyar, Chennai",
+          desc: "Buyer Priya Raman submitted order request with delivery preference."
+        },
+        {
+          status: "CONFIRMED",
+          title: "Confirmed & Packed by Seller",
+          time: "Nov 24, 2026 - 02:15 PM",
+          location: "Tambaram, Chennai",
+          desc: "Seller Karthik Sundaram verified item condition and prepared package."
+        },
+        {
+          status: "SHIPPED",
+          title: "Shipped & In Transit / Out for Delivery",
+          "time": "Nov 25, 2026 - 08:30 AM",
+          location: "Tambaram Sorting Hub, Chennai",
+          desc: "Package assigned to delivery partner Murugan S (+91 94451 88291). Expected today by 05:30 PM."
+        }
+      ]
+    },
+    {
+      id: 2,
+      trackingNumber: "TRK-RUH-8402",
+      productId: 1,
+      productTitle: "Dell Laptop Inspiron 15",
+      productPrice: 25000,
+      buyerId: 3,
+      buyerName: "Priya Raman",
+      sellerId: 2,
+      sellerName: "Karthik Sundaram",
+      status: "COMPLETED",
+      trackingStatus: "DELIVERED",
+      carrier: "ReUseHub Local Green Express",
+      driverName: "Suresh Kumar (Eco Courier)",
+      driverPhone: "+91 98402 11983",
+      pickupDate: "2026-11-24",
+      pickupTime: "02:00 PM",
+      shippedAt: "2026-11-24T10:15:00Z",
+      estimatedDelivery: "2026-11-24T14:30:00Z",
+      deliveredAt: "2026-11-24T14:25:00Z",
+      deliveryAddress: "28, Lattice Bridge Road, Adyar, Chennai - 600020",
+      pickupLocation: "14, Gandhi Road, Near Tambaram Railway Station, West Gate, Chennai",
+      handoverOtp: "8341",
+      buyerMessage: "Confirming laptop purchase with original charger.",
+      sellerResponse: "Laptop inspected and handed over with original charger and invoice.",
+      createdAt: "2026-11-22T09:30:00Z",
+      statusHistory: [
+        {
+          status: "ORDER_PLACED",
+          title: "Purchase Request Placed",
+          time: "Nov 22, 2026 - 09:30 AM",
+          location: "Adyar, Chennai",
+          desc: "Request initiated by Priya Raman."
+        },
+        {
+          status: "CONFIRMED",
+          title: "Seller Confirmed",
+          time: "Nov 22, 2026 - 01:00 PM",
+          location: "Tambaram, Chennai",
+          desc: "Seller approved purchase request."
+        },
+        {
+          status: "SHIPPED",
+          title: "Dispatched for Handover",
+          time: "Nov 24, 2026 - 10:15 AM",
+          location: "South Chennai Dispatch Hub",
+          desc: "Item on route with delivery partner Suresh Kumar."
+        },
+        {
+          status: "DELIVERED",
+          title: "Delivered & Handover Verified",
+          time: "Nov 24, 2026 - 02:25 PM",
+          location: "Adyar, Chennai",
+          desc: "Successfully received by Priya Raman. OTP 8341 verified."
+        }
+      ]
+    },
+    {
+      id: 3,
+      trackingNumber: "TRK-RUH-8403",
+      productId: 2,
+      productTitle: "Nike Sports Shoes",
+      productPrice: 1800,
+      buyerId: 3,
+      buyerName: "Priya Raman",
+      sellerId: 2,
+      sellerName: "Karthik Sundaram",
+      status: "ACCEPTED",
+      trackingStatus: "CONFIRMED",
+      carrier: "ReUseHub Local Pickup Hub",
+      driverName: "Awaiting Carrier Pickup",
+      driverPhone: "N/A",
+      pickupDate: "2026-11-26",
+      pickupTime: "11:00 AM",
+      shippedAt: null,
+      estimatedDelivery: "2026-11-26T14:00:00Z",
+      deliveredAt: null,
+      deliveryAddress: "28, Lattice Bridge Road, Adyar, Chennai - 600020",
+      pickupLocation: "Pondy Bazaar Near Naidu Hall, T. Nagar, Chennai",
+      handoverOtp: "4912",
+      buyerMessage: "Requesting sports shoes for local pickup on Thursday morning.",
+      sellerResponse: "Accepted. Item packed in original box and ready for dispatch.",
+      createdAt: "2026-11-25T07:15:00Z",
+      statusHistory: [
+        {
+          status: "ORDER_PLACED",
+          title: "Order Placed",
+          time: "Nov 25, 2026 - 07:15 AM",
+          location: "Adyar, Chennai",
+          desc: "Order placed by buyer."
+        },
+        {
+          status: "CONFIRMED",
+          title: "Confirmed & Packed",
+          time: "Nov 25, 2026 - 09:00 AM",
+          location: "T. Nagar, Chennai",
+          desc: "Packed and ready for pickup / dispatch."
+        }
+      ]
     }
   ],
   messages: [
@@ -812,13 +946,22 @@ const api = {
     return { message: 'Cart cleared' };
   },
 
-  // Purchase Requests
+  // Purchase Requests & Tracking
   async createPurchaseRequest(buyerId, requestData) {
+    const trackingNum = 'TRK-RUH-' + Math.floor(100000 + Math.random() * 900000);
+    const trackingPayload = {
+      ...requestData,
+      trackingNumber: trackingNum,
+      trackingStatus: 'ORDER_PLACED',
+      carrier: 'ReUseHub Green Express Local Courier',
+      deliveryAddress: requestData.deliveryAddress || 'Local Area, Chennai',
+      handoverOtp: Math.floor(1000 + Math.random() * 9000).toString()
+    };
     try {
       const res = await fetch(`${API_BASE}/requests?buyerId=${buyerId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestData)
+        body: JSON.stringify(trackingPayload)
       });
       if (res.ok) return await res.json();
     } catch (e) {}
@@ -826,8 +969,10 @@ const api = {
     const db = getLocalDb();
     const product = db.products.find(p => p.id === parseInt(requestData.productId));
     const buyer = db.users.find(u => u.id === parseInt(buyerId));
+    const nowIso = new Date().toISOString();
     const newReq = {
       id: Date.now(),
+      trackingNumber: trackingNum,
       productId: product ? product.id : requestData.productId,
       productTitle: product ? product.title : 'Item',
       productPrice: product ? product.price : 0,
@@ -836,15 +981,103 @@ const api = {
       sellerId: product ? product.sellerId : 2,
       sellerName: product ? product.sellerName : 'Karthik Sundaram',
       status: 'PENDING',
+      trackingStatus: 'ORDER_PLACED',
+      carrier: 'ReUseHub Green Express Local Courier',
+      driverName: 'Assigned on Dispatch',
+      driverPhone: '+91 94451 88291',
       pickupDate: requestData.pickupDate || new Date().toISOString().split('T')[0],
       pickupTime: requestData.pickupTime || '05:30 PM',
+      shippedAt: null,
+      estimatedDelivery: new Date(Date.now() + 86400000 * 2).toISOString(),
+      deliveredAt: null,
+      deliveryAddress: buyer ? `${buyer.address}, ${buyer.area}, ${buyer.city}` : 'Adyar, Chennai',
+      pickupLocation: product ? product.pickupLocation : 'Tambaram, Chennai',
+      handoverOtp: Math.floor(1000 + Math.random() * 9000).toString(),
       buyerMessage: requestData.buyerMessage || 'Interested in this item.',
       sellerResponse: null,
-      createdAt: new Date().toISOString()
+      createdAt: nowIso,
+      statusHistory: [
+        {
+          status: 'ORDER_PLACED',
+          title: 'Order Request Placed',
+          time: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          location: buyer ? buyer.city : 'Chennai',
+          desc: 'Buyer submitted purchase request with preferred pickup timing.'
+        }
+      ]
     };
     db.purchaseRequests.unshift(newReq);
     saveLocalDb(db);
     return newReq;
+  },
+
+  async getTracking(query) {
+    if (!query) return null;
+    const cleanQ = query.toString().trim().toUpperCase();
+    try {
+      const res = await fetch(`${API_BASE}/tracking/${encodeURIComponent(cleanQ)}`);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+
+    const db = getLocalDb();
+    const order = db.purchaseRequests.find(r => 
+      (r.trackingNumber && r.trackingNumber.toUpperCase() === cleanQ) ||
+      r.id.toString() === cleanQ ||
+      (r.productTitle && r.productTitle.toUpperCase().includes(cleanQ))
+    );
+    return order || null;
+  },
+
+  async updateTrackingStatus(requestId, trackingStatus, notes = '', location = 'Chennai Sorting Hub') {
+    try {
+      const res = await fetch(`${API_BASE}/requests/${requestId}/tracking`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trackingStatus, notes, location })
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+
+    const db = getLocalDb();
+    const reqObj = db.purchaseRequests.find(r => r.id === parseInt(requestId));
+    if (reqObj) {
+      reqObj.trackingStatus = trackingStatus;
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      if (!reqObj.statusHistory) reqObj.statusHistory = [];
+      
+      if (trackingStatus === 'SHIPPED') {
+        reqObj.shippedAt = new Date().toISOString();
+        reqObj.status = 'ACCEPTED';
+        reqObj.statusHistory.push({
+          status: 'SHIPPED',
+          title: 'Shipped & Out for Delivery',
+          time: nowStr,
+          location: location,
+          desc: notes || 'Package dispatched with ReUseHub delivery agent.'
+        });
+      } else if (trackingStatus === 'DELIVERED') {
+        reqObj.deliveredAt = new Date().toISOString();
+        reqObj.status = 'COMPLETED';
+        reqObj.statusHistory.push({
+          status: 'DELIVERED',
+          title: 'Delivered & Handover Verified',
+          time: nowStr,
+          location: location,
+          desc: notes || 'Item successfully received by buyer. Handover OTP verified.'
+        });
+      } else if (trackingStatus === 'CONFIRMED') {
+        reqObj.status = 'ACCEPTED';
+        reqObj.statusHistory.push({
+          status: 'CONFIRMED',
+          title: 'Order Confirmed & Packed',
+          time: nowStr,
+          location: location,
+          desc: notes || 'Seller verified and packed item for dispatch.'
+        });
+      }
+      saveLocalDb(db);
+    }
+    return reqObj;
   },
 
   async getSellerRequests(sellerId) {

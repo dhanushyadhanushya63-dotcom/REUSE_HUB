@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Order & Delivery | ReUseHub</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .track-stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 40px 0 25px 0;
+    }
+    .track-stepper::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 30px;
+      right: 30px;
+      height: 4px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+    .track-stepper-progress {
+      position: absolute;
+      top: 24px;
+      left: 30px;
+      height: 4px;
+      background: var(--primary-green, #176B45);
+      z-index: 2;
+      transition: width 0.5s ease;
+    }
+    .track-step {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      flex: 1;
+    }
+    .track-step-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 3px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin: 0 auto 10px auto;
+      transition: all 0.3s ease;
+      color: #64748b;
+    }
+    .track-step.active .track-step-circle {
+      border-color: var(--primary-green, #176B45);
+      background: var(--primary-green, #176B45);
+      color: #FFFFFF;
+      box-shadow: 0 0 0 6px rgba(23, 107, 69, 0.2);
+    }
+    .track-step.completed .track-step-circle {
+      border-color: var(--primary-green, #176B45);
+      background: #e8f5ec;
+      color: var(--primary-green, #176B45);
+    }
+    .track-step-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #334155;
+    }
+    .track-step-sub {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    .timeline-item {
+      position: relative;
+      padding-left: 32px;
+      padding-bottom: 24px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 0;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .timeline-item:last-child::before {
+      display: none;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 3px solid var(--primary-green, #176B45);
+    }
+    .timeline-dot.active {
+      background: var(--primary-green, #176B45);
+      box-shadow: 0 0 0 4px rgba(23, 107, 69, 0.25);
+    }
+    .otp-badge {
+      font-family: monospace;
+      font-size: 1.4rem;
+      letter-spacing: 4px;
+      background: #f8fafc;
+      border: 2px dashed var(--primary-green, #176B45);
+      color: var(--primary-green, #176B45);
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-weight: 800;
+    }
+    .demo-pill-btn {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      border: 1px solid #cbd5e1;
+      background: #FFFFFF;
+      color: #334155;
+      transition: all 0.2s;
+    }
+    .demo-pill-btn:hover {
+      background: #e8f5ec;
+      border-color: var(--primary-green, #176B45);
+      color: var(--primary-green, #176B45);
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-recycle fs-6"></i>
+        <span class="fw-semibold">Shop Smart. Reuse More. Go Green! • Real-Time Order & Delivery Tracking</span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <div class="dropdown d-none d-md-block">
+          <button class="btn btn-sm text-white dropdown-toggle py-0 px-2 border border-white border-opacity-25" type="button" data-bs-toggle="dropdown" style="font-size: 0.78rem;">
+            <i class="bi bi-person-gear me-1"></i>Demo Role
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 0.85rem;">
+            <li><h6 class="dropdown-header text-uppercase small">Switch Persona</h6></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" onclick="auth.switchAccount('ROLE_BUYER')"><i class="bi bi-bag-check text-success me-2"></i>Buyer: Priya Raman</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" onclick="auth.switchAccount('ROLE_SELLER')"><i class="bi bi-shop text-warning me-2"></i>Seller: Karthik Sundaram</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" onclick="auth.switchAccount('ROLE_ADMIN')"><i class="bi bi-shield-lock text-danger me-2"></i>Admin: HQ Manager</a></li>
+          </ul>
+        </div>
+        <div class="d-flex align-items-center gap-2 ms-2 ps-2 border-start border-white border-opacity-25">
+          <div class="nav-auth-guest d-flex gap-2">
+            <a href="login.html">Login</a>
+            <span class="opacity-50">•</span>
+            <a href="login.html?tab=register">Register</a>
+          </div>
+          <div class="nav-auth-user d-none d-flex align-items-center gap-2">
+            <span class="nav-user-name fw-bold text-white small"></span>
+            <span class="badge nav-user-role-badge"></span>
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm py-0 px-2 ms-1" style="font-size: 0.75rem;">Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-reusehub bg-white sticky-top shadow-sm">
+    <div class="container">
+      <a class="brand-logo-wrap" href="index.html">
+        <span class="brand-logo-icon"><i class="bi bi-recycle"></i></span>
+        <div class="brand-text">
+          <span class="brand-title">ReUse<span style="color: var(--orange-accent, #F4A340);">Hub</span></span>
+          <span class="brand-tagline">Buy • Sell • Donate</span>
+        </div>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMain">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="browse.html">Browse Products</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="sell.html">Sell an Item</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="donate.html">Donate</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom active text-success fw-bold" href="track.html"><i class="bi bi-truck me-1"></i>Track Order</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="about.html">About Us</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <a href="dashboard.html" class="btn btn-outline-success btn-sm"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
+          <a href="sell.html" class="btn-primary-green ms-1"><i class="bi bi-plus-lg"></i> Post Item</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Track Section -->
+  <header class="py-5" style="background: linear-gradient(135deg, #176B45 0%, #0d432b 100%); color: #FFFFFF;">
+    <div class="container text-center py-3">
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-10 text-white mb-3" style="font-size: 0.85rem;">
+        <i class="bi bi-geo-alt-fill text-warning"></i> Neighborhood Pickup & Courier Dispatch Tracking
+      </div>
+      <h1 class="fw-extrabold display-6 mb-2">Track Your Order & Delivery</h1>
+      <p class="text-white-50 mx-auto mb-4" style="max-width: 650px;">
+        Follow your second-hand purchase from seller packing to doorstep courier or neighborhood hub handover.
+      </p>
+
+      <!-- Search Box -->
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <form id="trackSearchForm" onsubmit="handleTrackSearch(event)" class="bg-white p-2 rounded-4 shadow-lg d-flex align-items-center gap-2">
+            <i class="bi bi-search text-muted ms-3 fs-5"></i>
+            <input type="text" id="trackSearchInput" class="form-control border-0 shadow-none py-2" placeholder="Enter Tracking ID (e.g. TRK-RUH-8401)" required>
+            <button type="submit" class="btn fw-bold px-4 py-2 rounded-3 text-white" style="background: var(--orange-accent, #F4A340);">
+              <i class="bi bi-arrow-right me-1"></i> Track
+            </button>
+          </form>
+
+          <!-- Quick Test Demo Pills -->
+          <div class="d-flex flex-wrap align-items-center justify-content-center gap-2 mt-3">
+            <span class="small text-white-50">Try sample IDs:</span>
+            <button type="button" class="demo-pill-btn" onclick="quickTrack('TRK-RUH-8401')">
+              <i class="bi bi-truck text-warning me-1"></i>TRK-RUH-8401 (Shipped)
+            </button>
+            <button type="button" class="demo-pill-btn" onclick="quickTrack('TRK-RUH-8402')">
+              <i class="bi bi-check-circle-fill text-success me-1"></i>TRK-RUH-8402 (Delivered)
+            </button>
+            <button type="button" class="demo-pill-btn" onclick="quickTrack('TRK-RUH-8403')">
+              <i class="bi bi-box-seam text-primary me-1"></i>TRK-RUH-8403 (Packed)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Tracking Container -->
+  <main class="container my-5">
+    <div id="trackingResultArea">
+      <!-- Loaded dynamically via JavaScript -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-reusehub">
+    <div class="container text-center py-4">
+      <div class="brand-title text-white mb-2">ReUse<span style="color: var(--orange-accent, #F4A340);">Hub</span></div>
+      <p class="small text-white-50 m-0">Shop Smart. Reuse More. Go Green! • © 2026 ReUseHub Marketplace</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Check query parameter
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('id') || params.get('tracking') || 'TRK-RUH-8401';
+      document.getElementById('trackSearchInput').value = q;
+      await performTracking(q);
+    });
+
+    function quickTrack(id) {
+      document.getElementById('trackSearchInput').value = id;
+      performTracking(id);
+    }
+
+    async function handleTrackSearch(e) {
+      e.preventDefault();
+      const q = document.getElementById('trackSearchInput').value.trim();
+      if (q) performTracking(q);
+    }
+
+    async function performTracking(trackingId) {
+      const container = document.getElementById('trackingResultArea');
+      container.innerHTML = `
+        <div class="text-center py-5">
+          <div class="spinner-border text-success" role="status"></div>
+          <p class="mt-2 text-muted">Retrieving live tracking details from ReUseHub dispatch network...</p>
+        </div>
+      `;
+
+      try {
+        const order = await window.api.getTracking(trackingId);
+        if (!order) {
+          container.innerHTML = `
+            <div class="card border-0 shadow-sm rounded-4 text-center py-5 p-4">
+              <i class="bi bi-exclamation-triangle text-warning display-4 mb-3"></i>
+              <h4>No Tracking Record Found for "${trackingId}"</h4>
+              <p class="text-muted" style="max-width: 500px; margin: 0 auto 20px auto;">
+                Please verify your Tracking ID or Order Number. You can also view your active purchases directly in your Dashboard.
+              </p>
+              <div>
+                <a href="dashboard.html" class="btn btn-primary-green btn-sm px-3">Open Buyer Dashboard</a>
+                <button class="btn btn-outline-secondary btn-sm px-3 ms-2" onclick="quickTrack('TRK-RUH-8401')">Try Sample ID</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        renderTrackingView(order);
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = `<div class="alert alert-danger">Error retrieving tracking info. Please try again.</div>`;
+      }
+    }
+
+    function renderTrackingView(order) {
+      const container = document.getElementById('trackingResultArea');
+
+      // Status mapping
+      const st = order.trackingStatus || 'ORDER_PLACED';
+      let currentStep = 1;
+      let progressWidth = '0%';
+      let statusColor = 'primary';
+      let statusText = 'Order Request Placed';
+      let statusBadge = 'bg-secondary';
+
+      if (st === 'ORDER_PLACED') {
+        currentStep = 1;
+        progressWidth = '12%';
+        statusColor = 'info';
+        statusText = 'Order Placed & Awaiting Seller Dispatch';
+        statusBadge = 'bg-info text-dark';
+      } else if (st === 'CONFIRMED') {
+        currentStep = 2;
+        progressWidth = '40%';
+        statusColor = 'warning';
+        statusText = 'Seller Confirmed & Item Packed';
+        statusBadge = 'bg-warning text-dark';
+      } else if (st === 'SHIPPED') {
+        currentStep = 3;
+        progressWidth = '75%';
+        statusColor = 'success';
+        statusText = 'Shipped & Out for Delivery / In Transit';
+        statusBadge = 'bg-primary text-white';
+      } else if (st === 'DELIVERED') {
+        currentStep = 4;
+        progressWidth = '100%';
+        statusColor = 'success';
+        statusText = 'Delivered & Handover Completed';
+        statusBadge = 'bg-success text-white';
+      }
+
+      // Dates
+      const shippedDateStr = order.shippedAt ? new Date(order.shippedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Scheduled for Dispatch';
+      const estDeliveryStr = order.estimatedDelivery ? new Date(order.estimatedDelivery).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Tomorrow by 05:30 PM';
+      const deliveredDateStr = order.deliveredAt ? new Date(order.deliveredAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : null;
+
+      container.innerHTML = `
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+          <!-- Card Header Banner -->
+          <div class="p-4 bg-white border-bottom">
+            <div class="row align-items-center g-3">
+              <div class="col-md-7">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  <span class="badge ${statusBadge} px-3 py-1 rounded-pill fw-bold text-uppercase" style="font-size: 0.8rem;">
+                    <i class="bi bi-clock-history me-1"></i>${st.replace('_', ' ')}
+                  </span>
+                  <span class="badge bg-light text-dark border px-2 py-1 font-monospace" style="font-size: 0.85rem;">
+                    ${order.trackingNumber || 'TRK-RUH-' + order.id}
+                  </span>
+                  <button class="btn btn-sm btn-link text-muted p-0" onclick="copyTracking('${order.trackingNumber || 'TRK-RUH-' + order.id}')" title="Copy Tracking ID">
+                    <i class="bi bi-copy"></i>
+                  </button>
+                </div>
+                <h3 class="fw-bold mb-1 text-dark">${order.productTitle}</h3>
+                <div class="text-muted small">
+                  <span>Seller: <strong>${order.sellerName}</strong></span> • 
+                  <span>Buyer: <strong>${order.buyerName}</strong></span> • 
+                  <span>Price: <strong class="text-success">₹${Number(order.productPrice).toLocaleString('en-IN')}</strong></span>
+                </div>
+              </div>
+              <div class="col-md-5 text-md-end">
+                <div class="p-3 rounded-3 ${st === 'DELIVERED' ? 'bg-success bg-opacity-10 text-success' : 'bg-light border text-dark'}">
+                  <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.72rem;">
+                    ${st === 'DELIVERED' ? 'Delivered On' : 'Estimated Delivery / Handover'}
+                  </small>
+                  <div class="fs-5 fw-bold">
+                    <i class="bi ${st === 'DELIVERED' ? 'bi-check-circle-fill text-success' : 'bi-calendar-check text-primary'} me-1"></i>
+                    ${deliveredDateStr || estDeliveryStr}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stepper Visual Progress -->
+          <div class="p-4 bg-white border-bottom">
+            <div class="track-stepper">
+              <div class="track-stepper-progress" style="width: ${progressWidth};"></div>
+              
+              <div class="track-step ${currentStep >= 1 ? (currentStep === 1 ? 'active' : 'completed') : ''}">
+                <div class="track-step-circle"><i class="bi bi-cart-check"></i></div>
+                <div class="track-step-label">Order Placed</div>
+                <div class="track-step-sub">${order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Step 1'}</div>
+              </div>
+
+              <div class="track-step ${currentStep >= 2 ? (currentStep === 2 ? 'active' : 'completed') : ''}">
+                <div class="track-step-circle"><i class="bi bi-box-seam"></i></div>
+                <div class="track-step-label">Packed & Confirmed</div>
+                <div class="track-step-sub">Seller Verified</div>
+              </div>
+
+              <div class="track-step ${currentStep >= 3 ? (currentStep === 3 ? 'active' : 'completed') : ''}">
+                <div class="track-step-circle"><i class="bi bi-truck"></i></div>
+                <div class="track-step-label">Out for Delivery</div>
+                <div class="track-step-sub">${shippedDateStr}</div>
+              </div>
+
+              <div class="track-step ${currentStep >= 4 ? 'active' : ''}">
+                <div class="track-step-circle"><i class="bi bi-house-door"></i></div>
+                <div class="track-step-label">Delivered</div>
+                <div class="track-step-sub">${deliveredDateStr || 'Handover'}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Cards Info Grid -->
+          <div class="p-4 bg-light">
+            <div class="row g-3">
+              <!-- Courier / Carrier -->
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-white p-3 rounded-3 shadow-sm">
+                  <div class="d-flex align-items-center gap-2 mb-2 text-success">
+                    <i class="bi bi-truck fs-4"></i>
+                    <h6 class="m-0 fw-bold">Courier Partner</h6>
+                  </div>
+                  <div class="fw-semibold text-dark small">${order.carrier || 'ReUseHub Green Express'}</div>
+                  <div class="text-muted small mt-1">Driver: ${order.driverName || 'Local Dispatch Agent'}</div>
+                  <div class="text-muted small"><i class="bi bi-telephone me-1"></i>${order.driverPhone || '+91 94451 88291'}</div>
+                </div>
+              </div>
+
+              <!-- Handover OTP -->
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-white p-3 rounded-3 shadow-sm text-center">
+                  <div class="d-flex align-items-center justify-content-center gap-2 mb-2 text-primary">
+                    <i class="bi bi-shield-lock-fill fs-5"></i>
+                    <h6 class="m-0 fw-bold">Handover OTP</h6>
+                  </div>
+                  <div class="my-1">
+                    <span class="otp-badge">${order.handoverOtp || '4829'}</span>
+                  </div>
+                  <small class="text-muted" style="font-size: 0.72rem;">Share this 4-digit code with seller / courier at handover</small>
+                </div>
+              </div>
+
+              <!-- Seller Pickup Landmark -->
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-white p-3 rounded-3 shadow-sm">
+                  <div class="d-flex align-items-center gap-2 mb-2 text-danger">
+                    <i class="bi bi-geo-alt-fill fs-5"></i>
+                    <h6 class="m-0 fw-bold">Seller Pickup Hub</h6>
+                  </div>
+                  <div class="small text-dark fw-semibold">${order.pickupLocation || '14, Gandhi Road, West Tambaram, Chennai'}</div>
+                  <div class="small text-muted mt-1"><i class="bi bi-clock me-1"></i>Preferred: ${order.pickupDate} • ${order.pickupTime}</div>
+                </div>
+              </div>
+
+              <!-- Buyer Delivery Destination -->
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-white p-3 rounded-3 shadow-sm">
+                  <div class="d-flex align-items-center gap-2 mb-2 text-warning">
+                    <i class="bi bi-house-check-fill fs-5"></i>
+                    <h6 class="m-0 fw-bold">Delivery Address</h6>
+                  </div>
+                  <div class="small text-dark fw-semibold">${order.deliveryAddress || '28, Lattice Bridge Road, Adyar, Chennai - 600020'}</div>
+                  <div class="small text-muted mt-1">Recipient: ${order.buyerName}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Event Timeline -->
+          <div class="p-4 bg-white border-top">
+            <h5 class="fw-bold mb-3"><i class="bi bi-clock-history text-success me-2"></i>Live Shipment Timeline</h5>
+            <div class="ps-2">
+              ${(order.statusHistory || []).map((ev, idx) => `
+                <div class="timeline-item">
+                  <div class="timeline-dot ${idx === order.statusHistory.length - 1 ? 'active' : ''}"></div>
+                  <div class="d-flex justify-content-between align-items-start">
+                    <h6 class="fw-bold mb-1 text-dark">${ev.title}</h6>
+                    <small class="text-muted fw-semibold">${ev.time}</small>
+                  </div>
+                  <div class="small text-muted mb-1"><i class="bi bi-pin-map text-danger me-1"></i>${ev.location}</div>
+                  <div class="small text-secondary">${ev.desc}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function copyTracking(id) {
+      navigator.clipboard.writeText(id);
+      window.auth ? window.showToast('Tracking ID copied: ' + id) : alert('Copied: ' + id);
+    }
+  </script>
+</body>
+</html>

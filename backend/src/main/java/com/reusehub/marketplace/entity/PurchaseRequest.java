@@ -39,6 +39,36 @@ public class PurchaseRequest {
     @Column(name = "seller_response", columnDefinition = "TEXT")
     private String sellerResponse;
 
+    @Column(name = "tracking_number", unique = true, length = 50)
+    private String trackingNumber;
+
+    @Column(name = "tracking_status", length = 50)
+    private String trackingStatus = "ORDER_PLACED";
+
+    @Column(name = "carrier", length = 100)
+    private String carrier = "ReUseHub Green Express";
+
+    @Column(name = "driver_name", length = 100)
+    private String driverName = "Murugan S (Delivery Partner)";
+
+    @Column(name = "driver_phone", length = 30)
+    private String driverPhone = "+91 94451 88291";
+
+    @Column(name = "shipped_at")
+    private LocalDateTime shippedAt;
+
+    @Column(name = "estimated_delivery")
+    private LocalDateTime estimatedDelivery;
+
+    @Column(name = "delivered_at")
+    private LocalDateTime deliveredAt;
+
+    @Column(name = "delivery_address", columnDefinition = "TEXT")
+    private String deliveryAddress;
+
+    @Column(name = "handover_otp", length = 10)
+    private String handoverOtp = "4829";
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -82,6 +112,36 @@ public class PurchaseRequest {
 
     public String getSellerResponse() { return sellerResponse; }
     public void setSellerResponse(String sellerResponse) { this.sellerResponse = sellerResponse; }
+
+    public String getTrackingNumber() { return trackingNumber; }
+    public void setTrackingNumber(String trackingNumber) { this.trackingNumber = trackingNumber; }
+
+    public String getTrackingStatus() { return trackingStatus; }
+    public void setTrackingStatus(String trackingStatus) { this.trackingStatus = trackingStatus; }
+
+    public String getCarrier() { return carrier; }
+    public void setCarrier(String carrier) { this.carrier = carrier; }
+
+    public String getDriverName() { return driverName; }
+    public void setDriverName(String driverName) { this.driverName = driverName; }
+
+    public String getDriverPhone() { return driverPhone; }
+    public void setDriverPhone(String driverPhone) { this.driverPhone = driverPhone; }
+
+    public LocalDateTime getShippedAt() { return shippedAt; }
+    public void setShippedAt(LocalDateTime shippedAt) { this.shippedAt = shippedAt; }
+
+    public LocalDateTime getEstimatedDelivery() { return estimatedDelivery; }
+    public void setEstimatedDelivery(LocalDateTime estimatedDelivery) { this.estimatedDelivery = estimatedDelivery; }
+
+    public LocalDateTime getDeliveredAt() { return deliveredAt; }
+    public void setDeliveredAt(LocalDateTime deliveredAt) { this.deliveredAt = deliveredAt; }
+
+    public String getDeliveryAddress() { return deliveryAddress; }
+    public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
+
+    public String getHandoverOtp() { return handoverOtp; }
+    public void setHandoverOtp(String handoverOtp) { this.handoverOtp = handoverOtp; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

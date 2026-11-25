@@ -49,6 +49,22 @@ Buyers can:
 
 ---
 
+## 🚚 Real-Time Order & Delivery Tracking System
+
+ReUseHub includes a complete 4-step delivery lifecycle tracker:
+1. **Order Placed** (Purchase request submitted with buyer schedule preference)
+2. **Packed & Confirmed** (Seller verifies item quality and prepares package)
+3. **Out for Delivery / In Transit** (Assigned to local green courier or scheduled for neighborhood hub pickup)
+4. **Delivered / Handover Verified** (Item handed over and verified using secure 4-digit OTP)
+
+### Key Features:
+- **Dedicated Tracking Portal** (`track.html`): Search by Tracking ID (e.g. `TRK-RUH-8401`, `TRK-RUH-8402`, `TRK-RUH-8403`).
+- **Interactive Buyer Modal**: 1-click **Track** button directly on every order row in Buyer Dashboard.
+- **Seller Shipping Controls**: Sellers can dispatch orders, update tracking statuses, and verify handovers.
+- **Courier & OTP Security**: Live driver contact details, seller landmark, buyer address, and 4-digit verification code.
+
+---
+
 ## 👥 Project Team & Contributors
 
 This project is built and maintained by:
@@ -159,6 +175,7 @@ Use the **Demo Role** dropdown in the top bar, or login on `/login.html`:
 | `seller-login.html` | **Seller Portal Login** | Dedicated login interface for sellers & donors |
 | `admin-login.html` | **Admin Portal Login** | Dedicated security interface for platform administrators |
 | `about.html` | **About Us** | Mission statement, circular economy pillars, in-person pickup safety tips, FAQs |
+| `track.html` | **Track Order & Delivery** | 4-step visual stepper, tracking ID search, live courier details, handover OTP, milestone event timeline |
 
 ---
 

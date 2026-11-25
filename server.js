@@ -388,8 +388,10 @@ const server = http.createServer(async (req, res) => {
 
       if (!product) return sendJson(res, 404, { error: 'Product not found' });
 
+      const trackingNum = data.trackingNumber || ('TRK-RUH-' + Math.floor(100000 + Math.random() * 900000));
       const newReq = {
         id: Date.now(),
+        trackingNumber: trackingNum,
         productId: product.id,
         productTitle: product.title,
         productPrice: product.price,
@@ -398,11 +400,30 @@ const server = http.createServer(async (req, res) => {
         sellerId: product.sellerId,
         sellerName: product.sellerName,
         status: 'PENDING',
+        trackingStatus: 'ORDER_PLACED',
+        carrier: 'ReUseHub Green Express Local Courier',
+        driverName: 'Assigned on Dispatch',
+        driverPhone: '+91 94451 88291',
         pickupDate: data.pickupDate || new Date(Date.now() + 86400000).toISOString().split('T')[0],
         pickupTime: data.pickupTime || '05:00 PM',
+        shippedAt: null,
+        estimatedDelivery: new Date(Date.now() + 86400000 * 2).toISOString(),
+        deliveredAt: null,
+        deliveryAddress: buyer ? `${buyer.address}, ${buyer.area}, ${buyer.city}` : 'Adyar, Chennai',
+        pickupLocation: product.pickupLocation || 'Tambaram, Chennai',
+        handoverOtp: Math.floor(1000 + Math.random() * 9000).toString(),
         buyerMessage: data.buyerMessage || 'Interested in this item. Can pick it up as scheduled.',
         sellerResponse: null,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        statusHistory: [
+          {
+            status: 'ORDER_PLACED',
+            title: 'Purchase Request Placed',
+            time: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            location: buyer ? buyer.city : 'Chennai',
+            desc: 'Buyer submitted purchase request with preferred pickup timing.'
+          }
+        ]
       };
       db.purchaseRequests.unshift(newReq);
       saveDb(db);
@@ -447,6 +468,66 @@ const server = http.createServer(async (req, res) => {
         } else if (status === 'COMPLETED') {
           product.status = product.isDonation ? 'DONATED' : 'SOLD';
         }
+      }
+
+      saveDb(db);
+      return sendJson(res, 200, reqObj);
+    }
+
+    // 14A. TRACKING: GET BY TRACKING NUMBER OR ID
+    const trackingMatch = pathname.match(/^\/api\/tracking\/([^/]+)$/);
+    if (trackingMatch && req.method === 'GET') {
+      const q = decodeURIComponent(trackingMatch[1]).trim().toUpperCase();
+      const order = db.purchaseRequests.find(r =>
+        (r.trackingNumber && r.trackingNumber.toUpperCase() === q) ||
+        r.id.toString() === q ||
+        (r.productTitle && r.productTitle.toUpperCase().includes(q))
+      );
+      if (!order) return sendJson(res, 404, { error: 'Tracking record not found for query: ' + q });
+      return sendJson(res, 200, order);
+    }
+
+    // 14B. TRACKING: UPDATE SHIPPING & DELIVERY STATUS
+    const trackingUpdateMatch = pathname.match(/^\/api\/requests\/(\d+)\/tracking$/);
+    if (trackingUpdateMatch && req.method === 'PATCH') {
+      const id = parseInt(trackingUpdateMatch[1]);
+      const data = await parseBody(req);
+      const reqObj = db.purchaseRequests.find(r => r.id === id);
+      if (!reqObj) return sendJson(res, 404, { error: 'Request not found' });
+
+      reqObj.trackingStatus = data.trackingStatus || reqObj.trackingStatus;
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      if (!reqObj.statusHistory) reqObj.statusHistory = [];
+
+      if (data.trackingStatus === 'SHIPPED') {
+        reqObj.shippedAt = new Date().toISOString();
+        reqObj.status = 'ACCEPTED';
+        reqObj.statusHistory.push({
+          status: 'SHIPPED',
+          title: 'Shipped & Out for Delivery',
+          time: nowStr,
+          location: data.location || 'Chennai Sorting Hub',
+          desc: data.notes || 'Package dispatched with ReUseHub delivery agent.'
+        });
+      } else if (data.trackingStatus === 'DELIVERED') {
+        reqObj.deliveredAt = new Date().toISOString();
+        reqObj.status = 'COMPLETED';
+        reqObj.statusHistory.push({
+          status: 'DELIVERED',
+          title: 'Delivered & Handover Verified',
+          time: nowStr,
+          location: data.location || 'Buyer Address',
+          desc: data.notes || 'Item successfully received by buyer. Handover OTP verified.'
+        });
+      } else if (data.trackingStatus === 'CONFIRMED') {
+        reqObj.status = 'ACCEPTED';
+        reqObj.statusHistory.push({
+          status: 'CONFIRMED',
+          title: 'Order Confirmed & Packed',
+          time: nowStr,
+          location: data.location || 'Seller Landmark',
+          desc: data.notes || 'Seller verified and packed item for dispatch.'
+        });
       }
 
       saveDb(db);
