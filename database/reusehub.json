@@ -131,7 +131,8 @@
       "primaryImageUrl": "images/dell-laptop.jpg",
       "featured": true,
       "viewCount": 144,
-      "createdAt": "2026-11-20T10:30:00Z"
+      "createdAt": "2026-11-20T10:30:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 2,
@@ -152,7 +153,8 @@
       "primaryImageUrl": "images/nike-shoes.jpg",
       "featured": true,
       "viewCount": 99,
-      "createdAt": "2026-11-21T11:15:00Z"
+      "createdAt": "2026-11-21T11:15:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 3,
@@ -173,7 +175,8 @@
       "primaryImageUrl": "images/skybags-backpack.jpg",
       "featured": true,
       "viewCount": 75,
-      "createdAt": "2026-11-21T14:40:00Z"
+      "createdAt": "2026-11-21T14:40:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 4,
@@ -194,7 +197,8 @@
       "primaryImageUrl": "images/iphone-13.jpg",
       "featured": true,
       "viewCount": 232,
-      "createdAt": "2026-11-22T09:20:00Z"
+      "createdAt": "2026-11-22T09:20:00Z",
+      "sellerPhone": "+91 9894123456"
     },
     {
       "id": 5,
@@ -215,7 +219,8 @@
       "primaryImageUrl": "images/office-chair.jpg",
       "featured": true,
       "viewCount": 115,
-      "createdAt": "2026-11-22T16:00:00Z"
+      "createdAt": "2026-11-22T16:00:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 6,
@@ -236,7 +241,8 @@
       "primaryImageUrl": "images/hero-sustainability-box.jpg",
       "featured": true,
       "viewCount": 90,
-      "createdAt": "2026-11-23T08:00:00Z"
+      "createdAt": "2026-11-23T08:00:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 7,
@@ -257,7 +263,8 @@
       "primaryImageUrl": "images/dell-laptop.jpg",
       "featured": false,
       "viewCount": 42,
-      "createdAt": "2026-11-22T12:00:00Z"
+      "createdAt": "2026-11-22T12:00:00Z",
+      "sellerPhone": "+91 9894123456"
     },
     {
       "id": 8,
@@ -278,7 +285,8 @@
       "primaryImageUrl": "images/ethnic-kurti.jpg",
       "featured": false,
       "viewCount": 62,
-      "createdAt": "2026-11-21T18:30:00Z"
+      "createdAt": "2026-11-21T18:30:00Z",
+      "sellerPhone": "+91 9894123456"
     },
     {
       "id": 9,
@@ -299,7 +307,8 @@
       "primaryImageUrl": "images/denim-jacket.jpg",
       "featured": true,
       "viewCount": 118,
-      "createdAt": "2026-11-23T09:00:00Z"
+      "createdAt": "2026-11-23T09:00:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 10,
@@ -319,8 +328,9 @@
       "pickupLocation": "Near Kapaleeshwarar Temple North Mada St, Mylapore, Chennai",
       "primaryImageUrl": "images/silk-saree.jpg",
       "featured": true,
-      "viewCount": 177,
-      "createdAt": "2026-11-23T09:15:00Z"
+      "viewCount": 179,
+      "createdAt": "2026-11-23T09:15:00Z",
+      "sellerPhone": "+91 9894123456"
     },
     {
       "id": 11,
@@ -341,7 +351,8 @@
       "primaryImageUrl": "images/cotton-hoodie.jpg",
       "featured": false,
       "viewCount": 84,
-      "createdAt": "2026-11-23T09:30:00Z"
+      "createdAt": "2026-11-23T09:30:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 12,
@@ -362,7 +373,8 @@
       "primaryImageUrl": "images/wooden-coffee-table.jpg",
       "featured": true,
       "viewCount": 145,
-      "createdAt": "2026-11-23T10:00:00Z"
+      "createdAt": "2026-11-23T10:00:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 13,
@@ -382,8 +394,9 @@
       "pickupLocation": "Thoraipakkam Toll Plaza, OMR Rajiv Gandhi Salai, Chennai",
       "primaryImageUrl": "images/fabric-sofa.jpg",
       "featured": true,
-      "viewCount": 210,
-      "createdAt": "2026-11-23T10:30:00Z"
+      "viewCount": 211,
+      "createdAt": "2026-11-23T10:30:00Z",
+      "sellerPhone": "+91 9894123456"
     },
     {
       "id": 14,
@@ -404,7 +417,8 @@
       "primaryImageUrl": "images/wooden-bookshelf.jpg",
       "featured": true,
       "viewCount": 130,
-      "createdAt": "2026-11-23T11:00:00Z"
+      "createdAt": "2026-11-23T11:00:00Z",
+      "sellerPhone": "+91 9840123456"
     },
     {
       "id": 15,
@@ -425,7 +439,8 @@
       "primaryImageUrl": "images/wooden-coffee-table.jpg",
       "featured": false,
       "viewCount": 78,
-      "createdAt": "2026-11-23T11:15:00Z"
+      "createdAt": "2026-11-23T11:15:00Z",
+      "sellerPhone": "+91 9840123456"
     }
   ],
   "wishlist": [
@@ -440,15 +455,56 @@
       "productId": 4
     }
   ],
-  "cart": [
-    {
-      "id": 1,
-      "userId": 3,
-      "productId": 3,
-      "quantity": 1
-    }
-  ],
+  "cart": [],
   "purchaseRequests": [
+    {
+      "id": 1795582811058,
+      "productId": 10,
+      "productTitle": "Kanchipuram Pure Silk Saree",
+      "productPrice": 3500,
+      "buyerId": 3,
+      "buyerName": "Priya Raman",
+      "sellerId": 4,
+      "sellerName": "Ananya Natarajan",
+      "status": "PENDING",
+      "pickupDate": "2026-11-26",
+      "pickupTime": "05:00 PM",
+      "buyerMessage": "Purchase request via Cart Checkout.",
+      "sellerResponse": null,
+      "createdAt": "2026-11-25T05:00:11.058Z"
+    },
+    {
+      "id": 1795582811040,
+      "productId": 3,
+      "productTitle": "Skybags Backpack",
+      "productPrice": 800,
+      "buyerId": 3,
+      "buyerName": "Priya Raman",
+      "sellerId": 2,
+      "sellerName": "Karthik Sundaram",
+      "status": "PENDING",
+      "pickupDate": "2026-11-26",
+      "pickupTime": "05:00 PM",
+      "buyerMessage": "Purchase request via Cart Checkout.",
+      "sellerResponse": null,
+      "createdAt": "2026-11-25T05:00:11.040Z"
+    },
+    {
+      "id": 1795582543037,
+      "productId": 10,
+      "productTitle": "Kanchipuram Pure Silk Saree",
+      "productPrice": 3500,
+      "buyerId": 3,
+      "buyerName": "Priya Raman",
+      "sellerId": 4,
+      "sellerName": "Ananya Natarajan",
+      "status": "PENDING",
+      "pickupDate": "2026-11-26",
+      "pickupTime": "05:30 PM",
+      "buyerMessage": "-",
+      "sellerResponse": null,
+      "createdAt": "2026-11-25T04:55:43.038Z"
+    },
     {
       "id": 1,
       "trackingNumber": "TRK-RUH-8401",
@@ -497,7 +553,9 @@
           "location": "Tambaram Sorting Hub, Chennai",
           "desc": "Package assigned to delivery partner Murugan S (+91 94451 88291). Expected today by 05:30 PM."
         }
-      ]
+      ],
+      "sellerPhone": "+91 9840123456",
+      "buyerPhone": "+91 9444123456"
     },
     {
       "id": 2,
@@ -554,7 +612,9 @@
           "location": "Adyar, Chennai",
           "desc": "Successfully received by Priya Raman. OTP 8341 verified."
         }
-      ]
+      ],
+      "sellerPhone": "+91 9840123456",
+      "buyerPhone": "+91 9444123456"
     },
     {
       "id": 3,
@@ -597,7 +657,9 @@
           "location": "T. Nagar, Chennai",
           "desc": "Packed and ready for pickup / dispatch."
         }
-      ]
+      ],
+      "sellerPhone": "+91 9840123456",
+      "buyerPhone": "+91 9444123456"
     }
   ],
   "messages": [

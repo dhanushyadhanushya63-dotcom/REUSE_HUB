@@ -47,6 +47,38 @@ function saveDb(data) {
   }
 }
 
+// Match tracking record flexibly by tracking code, numeric digits, product title, or names
+function matchTrackingRecord(r, query) {
+  if (!r || !query) return false;
+  const qStr = query.toString().trim();
+  if (!qStr) return false;
+
+  const upperQ = qStr.toUpperCase();
+  const cleanQ = upperQ.replace(/[^A-Z0-9]/g, '');
+  const digitsQ = qStr.replace(/[^0-9]/g, '');
+
+  const trk = (r.trackingNumber || ('TRK-RUH-' + r.id)).toString().toUpperCase();
+  const cleanTrk = trk.replace(/[^A-Z0-9]/g, '');
+  const digitsTrk = trk.replace(/[^0-9]/g, '');
+
+  if (trk === upperQ || cleanTrk === cleanQ) return true;
+  if (cleanQ.length >= 2 && cleanTrk.includes(cleanQ)) return true;
+  if (cleanTrk.length >= 4 && cleanQ.includes(cleanTrk)) return true;
+
+  if (digitsQ) {
+    if (digitsTrk.includes(digitsQ) && digitsQ.length >= 2) return true;
+    if (r.id && r.id.toString() === digitsQ) return true;
+    if (r.productId && r.productId.toString() === digitsQ) return true;
+    if (r.handoverOtp && r.handoverOtp.toString() === digitsQ) return true;
+  }
+
+  if (r.productTitle && r.productTitle.toUpperCase().includes(upperQ)) return true;
+  if (r.buyerName && r.buyerName.toUpperCase().includes(upperQ)) return true;
+  if (r.sellerName && r.sellerName.toUpperCase().includes(upperQ)) return true;
+
+  return false;
+}
+
 // MIME types
 const MIME_TYPES = {
   '.html': 'text/html; charset=UTF-8',
@@ -276,6 +308,10 @@ const server = http.createServer(async (req, res) => {
       const product = db.products.find(p => p.id === id);
       if (!product) return sendJson(res, 404, { error: 'Product not found' });
       product.viewCount = (product.viewCount || 0) + 1;
+      if (!product.sellerPhone) {
+        const s = db.users.find(u => u.id === product.sellerId);
+        product.sellerPhone = (s && s.phone) || (product.sellerId === 4 ? '+91 9894123456' : '+91 9840123456');
+      }
       saveDb(db);
       return sendJson(res, 200, product);
     }
@@ -291,6 +327,7 @@ const server = http.createServer(async (req, res) => {
         id: Date.now(),
         sellerId: sellerId || 2,
         sellerName: seller ? seller.fullName : 'Verified Seller',
+        sellerPhone: (seller && seller.phone) || (sellerId === 4 ? '+91 9894123456' : '+91 9840123456'),
         categoryId: category ? category.id : 1,
         categoryName: category ? category.name : 'General',
         title: data.title || 'Untitled Item',
@@ -399,6 +436,8 @@ const server = http.createServer(async (req, res) => {
         buyerName: buyer ? buyer.fullName : 'Priya Raman',
         sellerId: product.sellerId,
         sellerName: product.sellerName,
+        sellerPhone: product.sellerPhone || (product.sellerId === 4 ? '+91 9894123456' : '+91 9840123456'),
+        buyerPhone: (buyer && buyer.phone) || '+91 9444123456',
         status: 'PENDING',
         trackingStatus: 'ORDER_PLACED',
         carrier: 'ReUseHub Green Express Local Courier',
@@ -474,15 +513,15 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, reqObj);
     }
 
-    // 14A. TRACKING: GET BY TRACKING NUMBER OR ID
+    // 14A. TRACKING: GET ALL OR BY TRACKING NUMBER / ID
+    if (pathname === '/api/tracking' && req.method === 'GET') {
+      return sendJson(res, 200, db.purchaseRequests || []);
+    }
+
     const trackingMatch = pathname.match(/^\/api\/tracking\/([^/]+)$/);
     if (trackingMatch && req.method === 'GET') {
-      const q = decodeURIComponent(trackingMatch[1]).trim().toUpperCase();
-      const order = db.purchaseRequests.find(r =>
-        (r.trackingNumber && r.trackingNumber.toUpperCase() === q) ||
-        r.id.toString() === q ||
-        (r.productTitle && r.productTitle.toUpperCase().includes(q))
-      );
+      const q = decodeURIComponent(trackingMatch[1]).trim();
+      const order = db.purchaseRequests.find(r => matchTrackingRecord(r, q));
       if (!order) return sendJson(res, 404, { error: 'Tracking record not found for query: ' + q });
       return sendJson(res, 200, order);
     }

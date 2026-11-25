@@ -136,6 +136,9 @@ function renderFeaturedProducts() {
               <i class="bi bi-cart-plus"></i>
               <span>${window.i18n.t('addToCart')}</span>
             </button>
+            <button class="btn-quick-view" onclick="openChatModal(${product.sellerId}, '${(product.sellerName || 'Seller').replace(/'/g, "\\'")}', ${product.id}, '${product.title.replace(/'/g, "\\'")}', '${product.sellerPhone || ''}')" title="Message Seller">
+              <i class="bi bi-chat-dots-fill text-success"></i>
+            </button>
             <button class="btn-quick-view" onclick="openProductModal(${product.id})" title="${window.i18n.t('viewDetails')}">
               <i class="bi bi-eye"></i>
             </button>
@@ -254,6 +257,16 @@ window.openProductModal = async function(productId) {
       ? `<span class="badge bg-danger fs-5">${window.i18n.t('freeDonationBadge')}</span>` 
       : `₹${Number(product.price).toLocaleString('en-IN')}`;
 
+    const sellerPhone = product.sellerPhone || (product.sellerId === 4 ? '+91 98941 23456' : '+91 98401 23456');
+    const cleanDigits = (sellerPhone || '').replace(/[^0-9]/g, '');
+    const cleanPhone = cleanDigits.startsWith('91') ? cleanDigits : ('91' + cleanDigits);
+    const sellerName = product.sellerName || 'Verified Seller';
+    const waText = encodeURIComponent(`Hi ${sellerName}, I am interested in your item "${product.title}" listed on ReUseHub. Is it still available?`);
+    const waUrl = `https://wa.me/${cleanPhone}?text=${waText}`;
+    const callUrl = `tel:+${cleanPhone}`;
+    const safeTitle = (product.title || '').replace(/'/g, "\\'");
+    const safeSellerName = (sellerName).replace(/'/g, "\\'");
+
     if (modalBody) {
       modalBody.innerHTML = `
         <div class="row g-4">
@@ -276,7 +289,7 @@ window.openProductModal = async function(productId) {
               </div>
             </div>
           </div>
-          <div class="col-md-6 d-flex flex-direction-column justify-content-between">
+          <div class="col-md-6 d-flex flex-column justify-content-between">
             <div>
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div class="fs-3 fw-bold text-success">${formattedPrice}</div>
@@ -284,7 +297,7 @@ window.openProductModal = async function(productId) {
               </div>
 
               <h6 class="fw-bold mb-2">${window.i18n.t('descriptionLabel')}</h6>
-              <p class="text-muted small mb-4" style="line-height: 1.6;">${product.description}</p>
+              <p class="text-muted small mb-3" style="line-height: 1.6;">${product.description}</p>
 
               <!-- Location Feature Highlight Box -->
               <div class="p-3 bg-light rounded-3 border mb-3">
@@ -298,28 +311,59 @@ window.openProductModal = async function(productId) {
                 </div>
               </div>
 
-              <!-- Seller Information -->
-              <div class="d-flex align-items-center gap-3 p-2 bg-white rounded-3 border mb-4">
-                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 1.2rem;">
-                  <i class="bi bi-person-check-fill"></i>
+              <!-- Seller Contact Options Card (Phone, WhatsApp & Live Message) -->
+              <div class="p-3 bg-white rounded-3 border mb-3 shadow-sm">
+                <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; font-size: 1.2rem;">
+                      <i class="bi bi-person-check-fill"></i>
+                    </div>
+                    <div>
+                      <div class="fw-bold text-dark lh-sm">${sellerName}</div>
+                      <div class="small text-success"><i class="bi bi-patch-check-fill me-1"></i>Verified Seller • Fast Responder</div>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-light text-dark border px-2 py-1 small fw-semibold">
+                      <i class="bi bi-telephone-fill text-primary me-1"></i>${sellerPhone}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <div class="fw-bold text-dark">${product.sellerName || 'Verified Seller'}</div>
-                  <div class="small text-success"><i class="bi bi-patch-check-fill me-1"></i>Verified Local Community Member</div>
+
+                <div class="small text-muted fw-semibold mb-2"><i class="bi bi-chat-quote-fill text-success me-1"></i>Direct Contact Options:</div>
+                <div class="row g-2">
+                  <div class="col-4">
+                    <a href="${callUrl}" class="btn btn-outline-primary btn-sm w-100 d-flex align-items-center justify-content-center gap-1 py-2 fw-bold shadow-sm" title="Call ${sellerPhone}">
+                      <i class="bi bi-telephone-fill"></i>
+                      <span>Call</span>
+                    </a>
+                  </div>
+                  <div class="col-4">
+                    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-sm w-100 d-flex align-items-center justify-content-center gap-1 py-2 fw-bold shadow-sm" title="Chat on WhatsApp">
+                      <i class="bi bi-whatsapp"></i>
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
+                  <div class="col-4">
+                    <button class="btn btn-success btn-sm w-100 d-flex align-items-center justify-content-center gap-1 py-2 fw-bold shadow-sm" onclick="openChatModal(${product.sellerId}, '${safeSellerName}', ${product.id}, '${safeTitle}', '${sellerPhone}')" title="In-App Live Chat">
+                      <i class="bi bi-chat-dots-fill"></i>
+                      <span>Message</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Action Buttons -->
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary-green flex-grow-1" onclick="openRequestModal(${product.id}, '${product.title.replace(/'/g, "\\'")}', ${product.price}, ${product.sellerId})">
-                <i class="bi bi-send-check"></i>
+            <div class="d-flex gap-2 pt-2">
+              <button class="btn btn-primary-green flex-grow-1 py-2 fw-bold" onclick="openRequestModal(${product.id}, '${safeTitle}', ${product.price}, ${product.sellerId})">
+                <i class="bi bi-send-check me-1"></i>
                 <span>${window.i18n.t('buyNow')}</span>
               </button>
-              <button class="btn btn-outline-success" onclick="openChatModal(${product.sellerId}, '${product.sellerName}', ${product.id}, '${product.title.replace(/'/g, "\\'")}')" title="Chat with Seller">
-                <i class="bi bi-chat-dots-fill"></i>
+              <button class="btn btn-outline-success px-3 fw-semibold" onclick="openChatModal(${product.sellerId}, '${safeSellerName}', ${product.id}, '${safeTitle}', '${sellerPhone}')" title="Chat with Seller">
+                <i class="bi bi-chat-dots-fill me-1"></i>Chat
               </button>
-              <button class="btn btn-light border" onclick="addToCart(${product.id})" title="Add to Cart">
+              <button class="btn btn-light border px-3" onclick="addToCart(${product.id})" title="Add to Cart">
                 <i class="bi bi-cart-plus fs-5 text-success"></i>
               </button>
             </div>
@@ -388,9 +432,12 @@ window.submitPurchaseRequest = async function(event) {
 let activeChatSellerId = null;
 let activeChatProductId = null;
 
-window.openChatModal = async function(sellerId, sellerName, productId, productTitle) {
+window.openChatModal = async function(sellerId, sellerName, productId, productTitle, sellerPhone) {
   const user = window.auth.getUser();
   if (!user) {
+    if (typeof window.openAuthModal === 'function') {
+      window.openAuthModal('login');
+    }
     window.showToast('Please login to message the seller', 'error');
     return;
   }
@@ -398,14 +445,57 @@ window.openChatModal = async function(sellerId, sellerName, productId, productTi
   activeChatSellerId = sellerId;
   activeChatProductId = productId;
 
-  document.getElementById('chatRecipientName').textContent = sellerName;
-  document.getElementById('chatProductPill').textContent = productTitle;
+  const phone = sellerPhone || (sellerId === 4 ? '+91 98941 23456' : '+91 98401 23456');
+  const cleanDigits = (phone || '').replace(/[^0-9]/g, '');
+  const cleanPhone = cleanDigits.startsWith('91') ? cleanDigits : ('91' + cleanDigits);
+  const waText = encodeURIComponent(`Hi ${sellerName || 'Seller'}, I am contacting you about "${productTitle || 'your item'}" on ReUseHub.`);
+  const waUrl = `https://wa.me/${cleanPhone}?text=${waText}`;
+  const callUrl = `tel:+${cleanPhone}`;
+
+  const nameEl = document.getElementById('chatRecipientName');
+  if (nameEl) nameEl.textContent = sellerName || 'Seller Chat';
+
+  const pillEl = document.getElementById('chatProductPill');
+  if (pillEl) pillEl.textContent = productTitle || 'Item inquiry';
+
+  const phoneTextEl = document.getElementById('chatSellerPhoneText');
+  if (phoneTextEl) phoneTextEl.textContent = phone;
+
+  const callBtn = document.getElementById('chatCallBtn');
+  if (callBtn) {
+    callBtn.href = callUrl;
+    callBtn.title = `Call ${sellerName || 'Seller'} at ${phone}`;
+  }
+
+  const waBtn = document.getElementById('chatWhatsAppBtn');
+  if (waBtn) {
+    waBtn.href = waUrl;
+    waBtn.title = `Chat with ${sellerName || 'Seller'} on WhatsApp`;
+  }
 
   await loadConversation(user.id, sellerId);
 
   const modalEl = document.getElementById('chatModal');
-  const bsModal = new bootstrap.Modal(modalEl);
-  bsModal.show();
+  if (modalEl) {
+    const bsModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    bsModal.show();
+  }
+};
+
+window.sendQuickMessage = function(text) {
+  const input = document.getElementById('chatInputText');
+  if (input) {
+    input.value = text;
+    const form = input.closest('form');
+    if (form) {
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        const ev = new Event('submit', { cancelable: true });
+        form.dispatchEvent(ev);
+      }
+    }
+  }
 };
 
 async function loadConversation(u1, u2) {

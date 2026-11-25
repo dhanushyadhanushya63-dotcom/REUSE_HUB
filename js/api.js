@@ -579,14 +579,86 @@ const DEFAULT_LOCAL_DB = {
   reports: []
 };
 
+// Match tracking record by flexible criteria (full tracking code, numeric digits, product, buyer/seller name)
+function matchTrackingRecord(r, query) {
+  if (!r || !query) return false;
+  const qStr = query.toString().trim();
+  if (!qStr) return false;
+
+  const upperQ = qStr.toUpperCase();
+  const cleanQ = upperQ.replace(/[^A-Z0-9]/g, '');
+  const digitsQ = qStr.replace(/[^0-9]/g, '');
+
+  const trk = (r.trackingNumber || ('TRK-RUH-' + r.id)).toString().toUpperCase();
+  const cleanTrk = trk.replace(/[^A-Z0-9]/g, '');
+  const digitsTrk = trk.replace(/[^0-9]/g, '');
+
+  // 1. Direct tracking number match (case / hyphen insensitive)
+  if (trk === upperQ || cleanTrk === cleanQ) return true;
+
+  // 2. Substring matching in tracking code
+  if (cleanQ.length >= 2 && cleanTrk.includes(cleanQ)) return true;
+  if (cleanTrk.length >= 4 && cleanQ.includes(cleanTrk)) return true;
+
+  // 3. Match numeric digits (e.g. "8401" matches "TRK-RUH-8401", "1" matches order 1)
+  if (digitsQ) {
+    if (digitsTrk.includes(digitsQ) && digitsQ.length >= 2) return true;
+    if (r.id && r.id.toString() === digitsQ) return true;
+    if (r.productId && r.productId.toString() === digitsQ) return true;
+    if (r.handoverOtp && r.handoverOtp.toString() === digitsQ) return true;
+  }
+
+  // 4. Product Title match
+  if (r.productTitle && r.productTitle.toUpperCase().includes(upperQ)) return true;
+
+  // 5. Buyer or Seller Name match
+  if (r.buyerName && r.buyerName.toUpperCase().includes(upperQ)) return true;
+  if (r.sellerName && r.sellerName.toUpperCase().includes(upperQ)) return true;
+
+  return false;
+}
+
 // Local storage DB helper
 function getLocalDb() {
+  let db = null;
   const raw = localStorage.getItem('reusehub_local_db_v2');
   if (raw) {
-    try { return JSON.parse(raw); } catch (e) {}
+    try { db = JSON.parse(raw); } catch (e) {}
   }
-  localStorage.setItem('reusehub_local_db_v2', JSON.stringify(DEFAULT_LOCAL_DB));
-  return DEFAULT_LOCAL_DB;
+  if (!db) {
+    db = JSON.parse(JSON.stringify(DEFAULT_LOCAL_DB));
+  }
+
+  // CRITICAL: Ensure demo purchase requests with tracking are ALWAYS present!
+  if (!db.purchaseRequests || !Array.isArray(db.purchaseRequests) || db.purchaseRequests.length === 0) {
+    db.purchaseRequests = JSON.parse(JSON.stringify(DEFAULT_LOCAL_DB.purchaseRequests || []));
+  } else {
+    // Make sure each demo tracking order is merged if missing
+    (DEFAULT_LOCAL_DB.purchaseRequests || []).forEach(demoReq => {
+      const hasReq = db.purchaseRequests.some(r => 
+        (r.trackingNumber && r.trackingNumber === demoReq.trackingNumber) ||
+        (r.id && r.id === demoReq.id)
+      );
+      if (!hasReq) {
+        db.purchaseRequests.push(demoReq);
+      }
+    });
+  }
+
+  if (db && Array.isArray(db.products)) {
+    db.products.forEach(p => {
+      if (!p.sellerPhone) p.sellerPhone = p.sellerId === 4 ? '+91 9894123456' : '+91 9840123456';
+    });
+  }
+  if (db && Array.isArray(db.purchaseRequests)) {
+    db.purchaseRequests.forEach(r => {
+      if (!r.sellerPhone) r.sellerPhone = r.sellerId === 4 ? '+91 9894123456' : '+91 9840123456';
+      if (!r.buyerPhone) r.buyerPhone = '+91 9444123456';
+      if (!r.trackingNumber) r.trackingNumber = 'TRK-RUH-' + (r.id || Math.floor(1000 + Math.random() * 9000));
+    });
+  }
+  saveLocalDb(db);
+  return db;
 }
 
 function saveLocalDb(data) {
@@ -980,6 +1052,8 @@ const api = {
       buyerName: buyer ? buyer.fullName : 'Priya Raman',
       sellerId: product ? product.sellerId : 2,
       sellerName: product ? product.sellerName : 'Karthik Sundaram',
+      sellerPhone: (product && product.sellerPhone) || (product && product.sellerId === 4 ? '+91 9894123456' : '+91 9840123456'),
+      buyerPhone: (buyer && buyer.phone) || '+91 9444123456',
       status: 'PENDING',
       trackingStatus: 'ORDER_PLACED',
       carrier: 'ReUseHub Green Express Local Courier',
@@ -1013,19 +1087,25 @@ const api = {
 
   async getTracking(query) {
     if (!query) return null;
-    const cleanQ = query.toString().trim().toUpperCase();
+    const cleanQ = query.toString().trim();
     try {
       const res = await fetch(`${API_BASE}/tracking/${encodeURIComponent(cleanQ)}`);
       if (res.ok) return await res.json();
     } catch (e) {}
 
     const db = getLocalDb();
-    const order = db.purchaseRequests.find(r => 
-      (r.trackingNumber && r.trackingNumber.toUpperCase() === cleanQ) ||
-      r.id.toString() === cleanQ ||
-      (r.productTitle && r.productTitle.toUpperCase().includes(cleanQ))
-    );
+    const order = db.purchaseRequests.find(r => matchTrackingRecord(r, cleanQ));
     return order || null;
+  },
+
+  async getAllTrackingOrders() {
+    try {
+      const res = await fetch(`${API_BASE}/tracking`);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+
+    const db = getLocalDb();
+    return db.purchaseRequests || [];
   },
 
   async updateTrackingStatus(requestId, trackingStatus, notes = '', location = 'Chennai Sorting Hub') {

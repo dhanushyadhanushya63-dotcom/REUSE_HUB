@@ -492,24 +492,65 @@
     </div>
   </div>
 
-  <!-- Live Chat Modal -->
+  <!-- Live Chat & Direct Contact Modal -->
   <div class="modal fade" id="chatModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
-        <div class="modal-header border-0 bg-success text-white">
-          <div>
-            <h5 class="modal-title fw-bold m-0" id="chatRecipientName">Chat</h5>
-            <div class="small opacity-75" id="chatProductPill">Message</div>
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+        <div class="modal-header border-0 bg-success text-white py-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-white text-success rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; font-size: 1.25rem;">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold m-0 text-white" id="chatRecipientName">Chat</h5>
+              <div class="small text-white-50 d-flex align-items-center gap-2 mt-1">
+                <span id="chatProductPill" class="badge bg-white bg-opacity-25 text-white fw-normal">Message</span>
+                <span class="badge bg-white text-dark fw-semibold" id="chatSellerPhoneBadge">
+                  <i class="bi bi-telephone-fill text-success me-1"></i><span id="chatSellerPhoneText">+91 98401 23456</span>
+                </span>
+              </div>
+            </div>
           </div>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
+
+        <!-- Quick Direct Contact Action Strip (Call Phone & WhatsApp) -->
+        <div class="bg-light border-bottom p-2 px-3 d-flex align-items-center justify-content-between">
+          <span class="small text-muted fw-semibold"><i class="bi bi-shield-check text-success me-1"></i>Direct Contact:</span>
+          <div class="d-flex gap-2">
+            <a id="chatCallBtn" href="tel:+919840123456" class="btn btn-sm btn-outline-primary fw-semibold px-2 py-1 shadow-sm" title="Call Seller Directly">
+              <i class="bi bi-telephone-fill me-1"></i>Call Phone
+            </a>
+            <a id="chatWhatsAppBtn" href="https://wa.me/919840123456" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success fw-semibold px-2 py-1 shadow-sm" title="Chat on WhatsApp">
+              <i class="bi bi-whatsapp me-1"></i>WhatsApp
+            </a>
+          </div>
+        </div>
+
         <div class="modal-body p-0">
-          <div class="chat-messages-container" id="chatMessagesContainer"></div>
+          <!-- Quick Chat Suggestion Chips -->
+          <div class="p-2 bg-white border-bottom d-flex gap-1 overflow-x-auto flex-nowrap" id="chatQuickSuggestions" style="scrollbar-width: thin;">
+            <button type="button" class="btn btn-sm btn-light border rounded-pill text-nowrap small text-muted" onclick="sendQuickMessage('Is this item still available?')">
+              💬 Is this still available?
+            </button>
+            <button type="button" class="btn btn-sm btn-light border rounded-pill text-nowrap small text-muted" onclick="sendQuickMessage('Can I inspect it in person?')">
+              🔍 Can I inspect it?
+            </button>
+            <button type="button" class="btn btn-sm btn-light border rounded-pill text-nowrap small text-muted" onclick="sendQuickMessage('Can we negotiate the price?')">
+              🤝 Best price?
+            </button>
+            <button type="button" class="btn btn-sm btn-light border rounded-pill text-nowrap small text-muted" onclick="sendQuickMessage('When is the earliest pickup time?')">
+              📦 Earliest pickup?
+            </button>
+          </div>
+          <div class="chat-messages-container" id="chatMessagesContainer" style="max-height: 320px; min-height: 240px; overflow-y: auto; padding: 15px; background: #f8fafc;"></div>
         </div>
         <div class="modal-footer border-0 p-3 bg-light">
           <form class="d-flex w-100 gap-2" onsubmit="sendChatMessage(event)">
-            <input type="text" id="chatInputText" class="form-control" placeholder="Type message..." autocomplete="off" required>
-            <button type="submit" class="btn btn-primary-green px-3"><i class="bi bi-send-fill"></i></button>
+            <input type="text" id="chatInputText" class="form-control rounded-pill px-3" placeholder="Type message..." autocomplete="off" required>
+            <button type="submit" class="btn btn-primary-green rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; flex-shrink: 0;" title="Send Message">
+              <i class="bi bi-send-fill"></i>
+            </button>
           </form>
         </div>
       </div>
@@ -630,11 +671,24 @@
 
           const estDate = r.estimatedDelivery ? new Date(r.estimatedDelivery).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Pending';
 
+          const sPhone = r.sellerPhone || (r.sellerId === 4 ? '+91 98941 23456' : '+91 98401 23456');
+          const cleanSDigits = (sPhone || '').replace(/[^0-9]/g, '');
+          const cleanSPhone = cleanSDigits.startsWith('91') ? cleanSDigits : ('91' + cleanSDigits);
+          const sWaUrl = `https://wa.me/${cleanSPhone}?text=${encodeURIComponent(`Hi ${r.sellerName}, regarding my order for "${r.productTitle}" (${trackId}) on ReUseHub.`)}`;
+          const sCallUrl = `tel:+${cleanSPhone}`;
+          const safeTitle = (r.productTitle || '').replace(/'/g, "\\'");
+          const safeSeller = (r.sellerName || '').replace(/'/g, "\\'");
+
           return `
             <tr>
               <td class="fw-bold text-dark">${r.productTitle}</td>
               <td class="text-success fw-bold">₹${Number(r.productPrice).toLocaleString('en-IN')}</td>
-              <td>${r.sellerName}</td>
+              <td>
+                <div class="fw-semibold text-dark">${r.sellerName}</div>
+                <div class="d-flex align-items-center gap-1 mt-1">
+                  <span class="badge bg-light text-muted border small"><i class="bi bi-telephone-fill text-primary me-1"></i>${sPhone}</span>
+                </div>
+              </td>
               <td>
                 <span class="badge bg-light text-dark border font-monospace py-1 px-2">${trackId}</span>
               </td>
@@ -644,12 +698,18 @@
                 <div class="small text-muted">${trkStatus === 'DELIVERED' ? 'Handover Done' : 'Est: ' + estDate}</div>
               </td>
               <td>
-                <div class="d-flex gap-1">
-                  <button class="btn btn-sm btn-success py-1 px-2" onclick="openTrackingModal('${trackId}')" title="Track Live Delivery">
+                <div class="d-flex align-items-center gap-1">
+                  <button class="btn btn-sm btn-success py-1 px-2 shadow-sm" onclick="openTrackingModal('${trackId}')" title="Track Live Delivery">
                     <i class="bi bi-truck me-1"></i>Track
                   </button>
-                  <button class="btn btn-sm btn-outline-secondary py-1 px-2" onclick="openChatModal(${r.sellerId}, '${r.sellerName}', ${r.productId}, '${r.productTitle.replace(/'/g, "\\'")}')" title="Message Seller">
-                    <i class="bi bi-chat-dots"></i>
+                  <a href="${sCallUrl}" class="btn btn-sm btn-outline-primary py-1 px-2" title="Call Seller: ${sPhone}">
+                    <i class="bi bi-telephone-fill"></i>
+                  </a>
+                  <a href="${sWaUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-1 px-2" title="WhatsApp Seller">
+                    <i class="bi bi-whatsapp"></i>
+                  </a>
+                  <button class="btn btn-sm btn-outline-secondary py-1 px-2" onclick="openChatModal(${r.sellerId}, '${safeSeller}', ${r.productId}, '${safeTitle}', '${sPhone}')" title="Message Seller In-App">
+                    <i class="bi bi-chat-dots-fill"></i>
                   </button>
                 </div>
               </td>
@@ -728,10 +788,31 @@
             'DELIVERED': '<span class="badge bg-success text-white">Handover Done</span>'
           }[trkStatus] || '<span class="badge bg-secondary">' + trkStatus + '</span>';
 
+          const bPhone = r.buyerPhone || '+91 94441 23456';
+          const cleanBDigits = (bPhone || '').replace(/[^0-9]/g, '');
+          const cleanBPhone = cleanBDigits.startsWith('91') ? cleanBDigits : ('91' + cleanBDigits);
+          const bWaUrl = `https://wa.me/${cleanBPhone}?text=${encodeURIComponent(`Hi ${r.buyerName}, regarding your request for "${r.productTitle}" on ReUseHub.`)}`;
+          const bCallUrl = `tel:+${cleanBPhone}`;
+          const safeTitle = (r.productTitle || '').replace(/'/g, "\\'");
+          const safeBuyer = (r.buyerName || '').replace(/'/g, "\\'");
+
           return `
             <tr>
-              <td class="fw-bold">${r.productTitle}</td>
-              <td>${r.buyerName}</td>
+              <td class="fw-bold text-dark">${r.productTitle}</td>
+              <td>
+                <div class="fw-semibold text-dark">${r.buyerName}</div>
+                <div class="d-flex align-items-center gap-1 mt-1">
+                  <a href="${bCallUrl}" class="btn btn-sm btn-outline-primary py-0 px-2 small" title="Call Buyer: ${bPhone}">
+                    <i class="bi bi-telephone-fill me-1"></i>${bPhone}
+                  </a>
+                  <a href="${bWaUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success py-0 px-2 small" title="WhatsApp Buyer">
+                    <i class="bi bi-whatsapp"></i>
+                  </a>
+                  <button class="btn btn-sm btn-outline-secondary py-0 px-2 small" onclick="openChatModal(${r.buyerId}, '${safeBuyer}', ${r.productId}, '${safeTitle}', '${bPhone}')" title="Chat In-App">
+                    <i class="bi bi-chat-dots-fill"></i>
+                  </button>
+                </div>
+              </td>
               <td>${r.pickupDate} • ${r.pickupTime}</td>
               <td><span class="badge bg-light text-dark border font-monospace">${trackId}</span></td>
               <td>${trackingBadge}</td>
