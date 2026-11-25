@@ -1,0 +1,19 @@
+{
+  "name": "reusehub-marketplace",
+  "version": "1.0.0",
+  "description": "ReUseHub – Second-Hand Product Marketplace (Buy, Sell & Donate)",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "marketplace",
+    "second-hand",
+    "reuse",
+    "sustainability",
+    "ecommerce"
+  ],
+  "author": "ReUseHub Team",
+  "license": "MIT"
+}
