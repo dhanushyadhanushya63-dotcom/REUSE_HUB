@@ -1,0 +1,21 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Node
+node_modules/
+
+# Maven & Java Build Output
+target/
+backend/target/
+*.class
+
+# IDE Settings
+.idea/
+*.iml
+*.sublime-*

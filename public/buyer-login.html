@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buyer Login – ReUseHub</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-bag-check-fill text-white fs-6"></i>
+        <span class="fw-semibold">ReUseHub Buyer Portal • Track Purchases, Saved Items & Local Pickups</span>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-reusehub bg-white border-bottom">
+    <div class="container justify-content-between">
+      <a class="brand-logo-wrap" href="index.html">
+        <div class="brand-logo-icon"><i class="bi bi-recycle"></i></div>
+        <div>
+          <div class="brand-title">ReUse<span style="color: var(--orange-accent);">Hub</span></div>
+          <div class="brand-tagline-sub">Buyer Portal</div>
+        </div>
+      </a>
+      <div class="d-flex align-items-center gap-2">
+        <a href="seller-login.html" class="btn btn-outline-warning text-dark btn-sm"><i class="bi bi-shop me-1"></i> Seller Login</a>
+        <a href="admin-login.html" class="btn btn-outline-danger btn-sm"><i class="bi bi-shield-lock me-1"></i> Admin Login</a>
+        <a href="index.html" class="btn btn-outline-secondary btn-sm"><i class="bi bi-house-door me-1"></i> Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Container -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-5">
+
+        <!-- Buyer Portal Header Card -->
+        <div class="text-center mb-4">
+          <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mb-3 shadow" style="width: 64px; height: 64px; font-size: 1.8rem;">
+            <i class="bi bi-bag-heart-fill"></i>
+          </div>
+          <h3 class="fw-bold text-dark">Buyer Login</h3>
+          <p class="text-muted small">Access your purchase requests, saved wishlist, cart, and seller chat</p>
+        </div>
+
+        <!-- 1-Click Demo Login Box -->
+        <div class="p-3 bg-white rounded-3 border shadow-sm mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small fw-bold text-success text-uppercase"><i class="bi bi-lightning-charge-fill text-warning me-1"></i>Instant 1-Click Buyer Demo</span>
+            <span class="badge bg-success-subtle text-success">Chennai</span>
+          </div>
+          <button type="button" class="btn btn-outline-success w-100 text-start d-flex justify-content-between align-items-center" onclick="quickBuyerLogin()">
+            <div>
+              <div class="fw-bold"><i class="bi bi-person-check-fill me-2 text-success"></i>Priya Raman</div>
+              <div class="small text-muted">buyer@reusehub.com • password123</div>
+            </div>
+            <span class="badge bg-success">Login as Buyer</span>
+          </button>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+          <form onsubmit="handleBuyerLogin(event)">
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Buyer Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
+                <input type="email" id="buyerEmail" class="form-control" placeholder="buyer@reusehub.com" required value="buyer@reusehub.com">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label small fw-bold mb-0">Password</label>
+                <span class="small text-muted">Demo: password123</span>
+              </div>
+              <div class="input-group mt-1">
+                <span class="input-group-text bg-light"><i class="bi bi-lock text-muted"></i></span>
+                <input type="password" id="buyerPassword" class="form-control" placeholder="••••••••" required value="password123">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary-green w-100 py-2 fw-bold shadow-sm">
+              <i class="bi bi-box-arrow-in-right me-2"></i>Login to Buyer Dashboard
+            </button>
+          </form>
+
+          <div class="text-center mt-4 pt-3 border-top small text-muted">
+            Don't have a buyer account? <a href="login.html?tab=register&role=ROLE_BUYER" class="text-success fw-bold text-decoration-none">Register as a Buyer</a>
+          </div>
+        </div>
+
+        <!-- Role Navigation Links -->
+        <div class="d-flex justify-content-between mt-4 small text-muted px-2">
+          <a href="seller-login.html" class="text-decoration-none text-muted"><i class="bi bi-shop me-1 text-warning"></i>Are you a Seller? Log in here</a>
+          <a href="admin-login.html" class="text-decoration-none text-muted"><i class="bi bi-shield-lock me-1 text-danger"></i>Admin Portal</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-reusehub text-center py-4">
+    <div class="container small text-white-50">
+      ReUseHub Buyer Portal • Buy • Save Money • Reduce Waste
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    async function quickBuyerLogin() {
+      document.getElementById('buyerEmail').value = 'buyer@reusehub.com';
+      document.getElementById('buyerPassword').value = 'password123';
+      const res = await window.api.login('buyer@reusehub.com', 'password123');
+      if (res.token) {
+        window.auth.setUser(res);
+        window.showToast(`Logged in as Buyer: ${res.fullName}!`);
+        setTimeout(() => {
+          window.location.href = '/dashboard.html?tab=buyer';
+        }, 600);
+      }
+    }
+
+    async function handleBuyerLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('buyerEmail').value.trim();
+      const password = document.getElementById('buyerPassword').value;
+
+      try {
+        const res = await window.api.login(email, password);
+        if (res.error) {
+          window.showToast(res.error, 'error');
+          return;
+        }
+        window.auth.setUser(res);
+        window.showToast(`Welcome Buyer: ${res.fullName}!`);
+        setTimeout(() => {
+          window.location.href = '/dashboard.html?tab=buyer';
+        }, 600);
+      } catch (err) {
+        window.showToast('Login failed. Please verify credentials.', 'error');
+      }
+    }
+  </script>
+</body>
+</html>

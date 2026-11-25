@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sell an Item – ReUseHub</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Top Bar -->
+  <div class="top-announcement-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-recycle fs-6"></i>
+        <span class="fw-semibold" data-i18n="brandTagline">Shop Smart. Reuse More. Go Green!</span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        
+        <div class="d-flex align-items-center gap-2 ms-2 ps-2 border-start border-white border-opacity-25">
+          <div class="nav-auth-user d-flex align-items-center gap-2">
+            <span class="nav-user-name fw-bold text-white small"></span>
+            <span class="badge nav-user-role-badge"></span>
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm py-0 px-2 ms-1" style="font-size: 0.75rem;" data-i18n="myDashboard">Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-reusehub bg-white">
+    <div class="container">
+      <a class="brand-logo-wrap" href="index.html">
+        <div class="brand-logo-icon"><i class="bi bi-recycle"></i></div>
+        <div>
+          <div class="brand-title">ReUse<span style="color: var(--orange-accent);">Hub</span></div>
+          <div class="brand-tagline-sub">Buy • Sell • Donate</div>
+        </div>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="index.html" data-i18n="navHome">Home</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="browse.html" data-i18n="navBrowse">Browse Products</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom active" href="sell.html" data-i18n="navSell">Sell an Item</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="donate.html" data-i18n="navDonate">Donate</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="about.html" data-i18n="navAbout">About Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sell Form Header -->
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="text-center mb-4">
+          <div class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill mb-2">
+            <i class="bi bi-shield-check me-1"></i> 100% Free Listing • No Hidden Commission
+          </div>
+          <h2 class="fw-bold">List an Item for Second-Hand Sale or Donation</h2>
+          <p class="text-muted">Give your pre-loved goods a second life and connect with buyers right in your local neighborhood.</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+          <form id="sellItemForm" onsubmit="handleProductSubmit(event)">
+            
+            <!-- Basic Details -->
+            <h5 class="fw-bold text-success mb-3 pb-2 border-bottom">
+              <i class="bi bi-info-circle-fill me-2"></i>1. Product Information
+            </h5>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Product Title <span class="text-danger">*</span></label>
+              <input type="text" id="title" class="form-control" placeholder="e.g. Dell Inspiron 15 Laptop / Nike Running Shoes" required>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold small">Category <span class="text-danger">*</span></label>
+                <select id="categoryId" class="form-select" required>
+                  <option value="">Select Category...</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold small">Condition <span class="text-danger">*</span></label>
+                <select id="conditionType" class="form-select" required>
+                  <option value="LIKE_NEW">Like New (Flawless, barely used)</option>
+                  <option value="GOOD" selected>Good (Minor cosmetic wear, works perfectly)</option>
+                  <option value="USED">Used (Normal signs of usage, fully functional)</option>
+                  <option value="FAIR">Fair (Visible signs of wear, priced accordingly)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold small">Price (₹) <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light fw-bold">₹</span>
+                  <input type="number" id="price" class="form-control" placeholder="1500" min="0" required>
+                </div>
+              </div>
+              <div class="col-md-6 d-flex align-items-center pt-3">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="isDonation" onchange="toggleDonationPrice(this)">
+                  <label class="form-check-label fw-bold text-danger" for="isDonation">
+                    <i class="bi bi-gift-fill me-1"></i>Donate for FREE (₹0 Price)
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold small">Detailed Description <span class="text-danger">*</span></label>
+              <textarea id="description" class="form-control" rows="4" placeholder="Mention age of product, usage history, specifications, included accessories, reasons for selling..." required></textarea>
+            </div>
+
+            <!-- Location Section (No API Keys: State -> City -> Area -> Pickup Location) -->
+            <h5 class="fw-bold text-success mb-3 pb-2 border-bottom">
+              <i class="bi bi-geo-alt-fill me-2"></i>2. Location & Pickup Details
+            </h5>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-bold small">State <span class="text-danger">*</span></label>
+                <select id="state" class="form-select" required>
+                  <option value="Tamil Nadu" selected>Tamil Nadu</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Telangana">Telangana</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-bold small">City <span class="text-danger">*</span></label>
+                <select id="city" class="form-select" required onchange="updateDefaultAreas(this.value)">
+                  <option value="Chennai" selected>Chennai</option>
+                  <option value="Coimbatore">Coimbatore</option>
+                  <option value="Madurai">Madurai</option>
+                  <option value="Trichy">Trichy</option>
+                  <option value="Salem">Salem</option>
+                  <option value="Bengaluru">Bengaluru</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-bold small">Area / Locality <span class="text-danger">*</span></label>
+                <input type="text" id="area" class="form-control" placeholder="e.g. Tambaram, Adyar, T. Nagar" required value="Tambaram">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold small">Specific Pickup Location / Landmark <span class="text-danger">*</span></label>
+              <input type="text" id="pickupLocation" class="form-control" placeholder="e.g. Near Tambaram Railway Station West Gate, Gandhi Road" required value="Near Tambaram Railway Station, West Gate, Chennai">
+              <div class="form-text small">Buyers will use this landmark to arrange their in-person handover. No GPS or Google Maps needed!</div>
+            </div>
+
+            <!-- Product Image -->
+            <h5 class="fw-bold text-success mb-3 pb-2 border-bottom">
+              <i class="bi bi-camera-fill me-2"></i>3. Product Photos
+            </h5>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Upload Photo or Pick a Demo Preset</label>
+              <div class="border border-dashed p-4 rounded-3 text-center bg-light">
+                <input type="file" id="imageFileInput" class="d-none" accept="image/*" onchange="handleImageFile(this)">
+                <div id="imagePreviewContainer" class="d-none mb-3">
+                  <img id="imagePreview" src="" alt="Preview" style="max-height: 200px; border-radius: 8px; border: 2px solid #176B45;">
+                </div>
+                <button type="button" class="btn btn-outline-success btn-sm mb-2" onclick="document.getElementById('imageFileInput').click()">
+                  <i class="bi bi-upload me-1"></i> Choose File from Computer
+                </button>
+                <div class="small text-muted mb-2">Or select a high-res sample product photo:</div>
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/dell-laptop.jpg')">Laptop</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/iphone-13.jpg')">iPhone</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/denim-jacket.jpg')">Denim Jacket</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/silk-saree.jpg')">Silk Saree</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/cotton-hoodie.jpg')">Hoodie</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/ethnic-kurti.jpg')">Kurti</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/wooden-coffee-table.jpg')">Coffee Table</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/fabric-sofa.jpg')">Fabric Sofa</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/wooden-bookshelf.jpg')">Bookshelf</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/office-chair.jpg')">Office Chair</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/nike-shoes.jpg')">Shoes</button>
+                  <button type="button" class="btn btn-sm btn-light border" onclick="selectPresetImage('/images/skybags-backpack.jpg')">Backpack</button>
+                </div>
+                <input type="hidden" id="primaryImageUrl" value="images/dell-laptop.jpg">
+              </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
+              <a href="index.html" class="btn btn-light px-4">Cancel</a>
+              <button type="submit" class="btn btn-primary-green px-5 py-2 fw-bold" id="submitBtn">
+                <i class="bi bi-check-circle-fill me-2"></i>Publish Listing Now
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-reusehub text-center py-4">
+    <div class="container small text-white-50">
+      ReUseHub – Sustainable Local Marketplace • Made with ❤️ for Tamil Nadu
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const cats = await window.api.getCategories();
+      const select = document.getElementById('categoryId');
+      select.innerHTML = '<option value="">Select Category...</option>' +
+        cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+      // If user is logged in, autofill seller location
+      const user = window.auth.getUser();
+      if (user) {
+        if (user.city) document.getElementById('city').value = user.city;
+        if (user.area) document.getElementById('area').value = user.area;
+      }
+    });
+
+    function toggleDonationPrice(checkbox) {
+      const priceInput = document.getElementById('price');
+      if (checkbox.checked) {
+        priceInput.value = 0;
+        priceInput.disabled = true;
+      } else {
+        priceInput.disabled = false;
+        priceInput.value = '';
+      }
+    }
+
+    function selectPresetImage(url) {
+      document.getElementById('primaryImageUrl').value = url;
+      document.getElementById('imagePreview').src = url;
+      document.getElementById('imagePreviewContainer').classList.remove('d-none');
+      window.showToast('Selected image preset');
+    }
+
+    function handleImageFile(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const dataUrl = e.target.result;
+          document.getElementById('imagePreview').src = dataUrl;
+          document.getElementById('imagePreviewContainer').classList.remove('d-none');
+          // Upload to server
+          const res = await window.api.uploadImage(dataUrl);
+          if (res.imageUrl) {
+            document.getElementById('primaryImageUrl').value = res.imageUrl;
+            window.showToast('Photo uploaded successfully!');
+          }
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    async function handleProductSubmit(event) {
+      event.preventDefault();
+      const user = window.auth.getUser();
+      const sellerId = user ? user.id : 2; // Default to Karthik Sundaram if guest
+
+      const title = document.getElementById('title').value;
+      const categoryId = parseInt(document.getElementById('categoryId').value);
+      const conditionType = document.getElementById('conditionType').value;
+      const price = parseFloat(document.getElementById('price').value || 0);
+      const isDonation = document.getElementById('isDonation').checked;
+      const description = document.getElementById('description').value;
+      const state = document.getElementById('state').value;
+      const city = document.getElementById('city').value;
+      const area = document.getElementById('area').value;
+      const pickupLocation = document.getElementById('pickupLocation').value;
+      const primaryImageUrl = document.getElementById('primaryImageUrl').value || '/images/hero-sustainability-box.jpg';
+
+      try {
+        const newProduct = await window.api.createProduct(sellerId, {
+          title,
+          categoryId,
+          conditionType,
+          price,
+          isDonation,
+          description,
+          state,
+          city,
+          area,
+          pickupLocation,
+          primaryImageUrl,
+          featured: true
+        });
+
+        window.showToast('Product published successfully on ReUseHub!');
+        setTimeout(() => {
+          window.location.href = '/dashboard.html?tab=seller';
+        }, 1200);
+      } catch (err) {
+        window.showToast('Failed to create product', 'error');
+      }
+    }
+  </script>
+</body>
+</html>
