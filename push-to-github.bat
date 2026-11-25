@@ -10,6 +10,7 @@ echo     - Devasri Anandhababu (devasri30anandhababu-dotcom)
 echo ========================================================
 echo.
 git push -u origin main
+git push origin --all
 echo.
 echo ========================================================
 echo Done! Check your GitHub repository at:
