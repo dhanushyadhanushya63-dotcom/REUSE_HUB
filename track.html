@@ -18,6 +18,9 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 
+  <!-- Theme Mode Loader (Zero-flash) -->
+  <script src="js/theme.js"></script>
+
   <style>
     .track-stepper {
       display: flex;
@@ -203,6 +206,9 @@
           <li class="nav-item"><a class="nav-link nav-link-custom" href="about.html">About Us</a></li>
         </ul>
         <div class="d-flex align-items-center gap-2">
+          <button type="button" class="nav-action-btn theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
           <a href="dashboard.html" class="btn btn-outline-success btn-sm"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
           <a href="sell.html" class="btn-primary-green ms-1"><i class="bi bi-plus-lg"></i> Post Item</a>
         </div>

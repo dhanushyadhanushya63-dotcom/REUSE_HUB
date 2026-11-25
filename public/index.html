@@ -17,6 +17,9 @@
   
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Theme Mode Loader (Zero-flash) -->
+  <script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -155,6 +158,11 @@
             <i class="bi bi-cart3"></i>
             <span class="nav-badge-count cart-badge">0</span>
           </a>
+
+          <!-- Dark / Light Mode Toggle Button -->
+          <button type="button" class="nav-action-btn theme-toggle-btn ms-1" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
 
           <!-- Login Dropdown Button -->
           <div class="dropdown ms-1">
