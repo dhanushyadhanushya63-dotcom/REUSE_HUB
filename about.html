@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us & Sustainability Impact – ReUseHub</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-announcement-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-recycle fs-6"></i>
+        <span class="fw-semibold" data-i18n="brandTagline">Shop Smart. Reuse More. Go Green!</span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        
+        <div class="d-flex align-items-center gap-2 ms-2 ps-2 border-start border-white border-opacity-25">
+          <div class="nav-auth-user d-flex align-items-center gap-2">
+            <span class="nav-user-name fw-bold text-white small"></span>
+            <span class="badge nav-user-role-badge"></span>
+            <a href="dashboard.html" class="btn btn-outline-light btn-sm py-0 px-2 ms-1" style="font-size: 0.75rem;" data-i18n="myDashboard">Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-reusehub bg-white border-bottom">
+    <div class="container">
+      <a class="brand-logo-wrap" href="index.html">
+        <div class="brand-logo-icon"><i class="bi bi-recycle"></i></div>
+        <div>
+          <div class="brand-title">ReUse<span style="color: var(--orange-accent);">Hub</span></div>
+          <div class="brand-tagline-sub">Buy • Sell • Donate</div>
+        </div>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="index.html" data-i18n="navHome">Home</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="browse.html" data-i18n="navBrowse">Browse Products</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="sell.html" data-i18n="navSell">Sell an Item</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="donate.html" data-i18n="navDonate">Donate</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom active" href="about.html" data-i18n="navAbout">About Us</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <a href="sell.html" class="btn-primary-green"><i class="bi bi-plus-lg"></i> Sell an Item</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- About Hero -->
+  <section class="py-5 bg-white border-bottom">
+    <div class="container text-center">
+      <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill mb-2">
+        Our Mission & Circular Vision
+      </span>
+      <h1 class="display-5 fw-bold text-dark">Building a Greener Tamil Nadu Through Smart Reuse</h1>
+      <p class="lead text-muted max-w-700 mx-auto" style="max-width: 720px;">
+        ReUseHub was created to eliminate unnecessary landfill waste and make high-quality second-hand goods accessible, affordable, and trustworthy for local communities.
+      </p>
+    </div>
+  </section>
+
+  <!-- Core Pillars -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-4 border shadow-sm h-100">
+            <div class="fs-1 text-success mb-3"><i class="bi bi-currency-rupee"></i></div>
+            <h4 class="fw-bold">Affordable Choices</h4>
+            <p class="text-muted small">Buy gently-used laptops, smartphones, furniture, and books at 40% to 70% below retail prices, saving valuable household budget.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-4 border shadow-sm h-100">
+            <div class="fs-1 text-success mb-3"><i class="bi bi-tree"></i></div>
+            <h4 class="fw-bold">Less Waste, More Impact</h4>
+            <p class="text-muted small">Every item given a second life prevents plastic, e-waste, and carbon emissions from entering local ecosystems and landfills.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-4 border shadow-sm h-100">
+            <div class="fs-1 text-success mb-3"><i class="bi bi-geo-alt"></i></div>
+            <h4 class="fw-bold">Local Neighborhood Discovery</h4>
+            <p class="text-muted small">Find products available right in your city or area (Tambaram, Adyar, T. Nagar, Gandhipuram) with clear seller pickup landmarks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Safety & Pickup Tips Section -->
+  <section class="py-5 bg-white border-top border-bottom" id="safety">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-2"><i class="bi bi-shield-check me-1"></i> Safety First</span>
+          <h2 class="fw-bold mb-3">Safe & Convenient In-Person Handover Guidelines</h2>
+          <p class="text-muted">ReUseHub connects local buyers and sellers. Follow these best practices when coordinating your item pickup:</p>
+          <ul class="list-unstyled d-flex flex-column gap-3 mt-4">
+            <li class="d-flex align-items-start gap-3">
+              <div class="bg-success-subtle text-success p-2 rounded-circle"><i class="bi bi-building fs-5"></i></div>
+              <div>
+                <strong>Meet in Public Well-Lit Landmarks:</strong>
+                <p class="small text-muted m-0">Coordinate pickups near bus terminals, metro stations, shopping malls, or apartment security gates.</p>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-3">
+              <div class="bg-success-subtle text-success p-2 rounded-circle"><i class="bi bi-search fs-5"></i></div>
+              <div>
+                <strong>Inspect the Item Thoroughly:</strong>
+                <p class="small text-muted m-0">Test electronics, check zippers, review book pages, and verify condition before finalizing the handover.</p>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-3">
+              <div class="bg-success-subtle text-success p-2 rounded-circle"><i class="bi bi-chat-dots fs-5"></i></div>
+              <div>
+                <strong>Use In-App Messaging:</strong>
+                <p class="small text-muted m-0">Keep all communication on ReUseHub to clarify product details and agree on pickup times.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <div class="p-4 bg-light rounded-4 border shadow-sm">
+            <h5 class="fw-bold mb-3"><i class="bi bi-question-circle-fill text-success me-2"></i>Frequently Asked Questions</h5>
+            <div class="accordion" id="faqAccordion">
+              <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    Is ReUseHub completely free to list items?
+                  </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body small text-muted">
+                    Yes! Sellers and donors can list any number of pre-owned goods with 100% zero listing fees and zero commission.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    Does the location feature require GPS or Google Maps?
+                  </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body small text-muted">
+                    No! We respect user privacy. Sellers manually enter their State, City, Area, and Pickup Landmark (e.g., Near Tambaram Station), requiring no GPS permissions and no paid API keys.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden shadow-sm">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    How do I communicate with buyers or sellers?
+                  </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body small text-muted">
+                    Once you submit a Purchase Request or an offer on an item, a direct messaging thread is initiated in your Dashboard. You can agree on pickup timing, inspection, and location safely.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-reusehub text-center py-4">
+    <div class="container small text-white-50">
+      ReUseHub Community Project • Buy • Sell • Donate • Shop Smart. Reuse More. Go Green!
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
